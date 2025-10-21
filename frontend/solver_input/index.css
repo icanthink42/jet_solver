@@ -76,8 +76,24 @@ textarea {
     width: 30%;
 }
 
-.value {
+.value-unit-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
     width: 70%;
+}
+
+.value {
+    flex: 1;
+    width: auto;
+}
+
+.unit {
+    color: #64748b;
+    font-size: 14px;
+    padding: 8px 4px;
+    white-space: nowrap;
+    font-family: monospace;
 }
 
 .remove-button {

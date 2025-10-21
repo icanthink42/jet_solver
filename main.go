@@ -32,8 +32,12 @@ func main() {
 		fmt.Fprint(w, frontend.SolverOutput(r.FormValue("name"), r.FormValue("json")))
 	})
 
-	fmt.Println("Server starting on http://localhost:8080")
-	if err := http.ListenAndServe(":8080", nil); err != nil {
+	http.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+	})
+
+	fmt.Printf("Server starting on http://localhost%s\n", PORT)
+	if err := http.ListenAndServe(PORT, nil); err != nil {
 		fmt.Printf("Server error: %v\n", err)
 	}
 }

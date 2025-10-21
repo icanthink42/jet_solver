@@ -29,6 +29,7 @@ type Solver interface {
 	Type() SolverType
 	InputType() InputType
 	PredefinedKeys() []string
+	PredefinedUnits() map[string]string
 }
 
 func LoadAllSolvers(dir string) ([]Solver, error) {
@@ -75,10 +76,20 @@ func LoadPythonSolver(name string, description string, manifest map[string]inter
 	}
 
 	var predefined_keys []string
+	var predefined_units = make(map[string]string)
+
 	if keys, ok := solverMap["predefined_keys"].([]interface{}); ok {
 		predefined_keys = make([]string, len(keys))
 		for i, k := range keys {
 			predefined_keys[i] = k.(string)
+		}
+	}
+
+	if units, ok := solverMap["predefined_units"].(map[string]interface{}); ok {
+		for key, unit := range units {
+			if unitStr, ok := unit.(string); ok {
+				predefined_units[key] = unitStr
+			}
 		}
 	}
 
@@ -89,6 +100,7 @@ func LoadPythonSolver(name string, description string, manifest map[string]inter
 		python_version:     pythonVersion,
 		input_type:         input_type,
 		predefined_keys:    predefined_keys,
+		predefined_units:   predefined_units,
 	}, nil
 }
 
